@@ -20,66 +20,74 @@ const Login: React.FC = () => {
         navigation.push('/it35-lab/app', 'forward', 'replace');
     }
 
-    const styles = {
-        container: {
-            display: 'flex',
-            flexDirection: 'column' as const,
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '130vh',
-            backgroundPosition: 'center',
-            backgroundImage: 'url("https://i.pinimg.com/originals/d1/20/e4/d120e49e9952232e0d593ceef62809b9.gif")',
-            backgroundSize: 'cover',
-             backgroundRepeat: 'no-repeat'
-        },
-        avatar: {
-            width: '300px',
-            height: '300px',
-            borderRadius: '',
-            marginBottom: '20px',
-        },
-        inputItem: {
-            width: '80%',
-            maxWidth: '400px',
-            marginBottom: '10px',
-            borderRadius: '20px',
-           
-        },
-        button: {
-          width: '20%',
-         
-            marginTop: '5px',
-            padding: '50px 80px',
-        }
-    };
-
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Login</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent>
-                <div style={styles.container}>
-                    <IonAvatar style={styles.avatar}>
+            <IonContent fullscreen={true}>
+                <style>
+                    {`
+                        .login-container {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            height: 100vh; 
+                            width: 100%; 
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            background: linear-gradient(270deg, #FF6B6B, #6B8BFF, #6BFF95, rgb(88, 235, 108));
+                            background-size: 600% 600%;
+                            animation: GradientRotation 10s ease infinite;
+                        }
+
+                        @keyframes GradientRotation {
+                            0% { background-position: 0% 50%; }
+                            50% { background-position: 100% 50%; }
+                            100% { background-position: 0% 50%; }
+                        }
+
+                        .avatar {
+                            width: 150px;
+                            height: 150px;
+                            border-radius: 50%;
+                            margin-bottom: 20px;
+                        }
+
+                        .input-item {
+                            width: 80%;
+                            max-width: 400px;
+                            margin-bottom: 10px;
+                            border-radius: 10px;
+                    
+                        }
+
+
+                        .login-button {
+                            width: 80%;
+                            max-width: 100px;
+                            margin-top: 20px;
+                            background-color: aquamarine;
+                            border-radius: 30px;
+                        }
+                    `}
+                </style>
+
+                <div className="login-container">
+                    <IonAvatar className="avatar">
                         <img src="https://www.recordnet.com/gcdn/presto/2021/03/22/NRCD/9d9dd9e4-e84a-402e-ba8f-daa659e6e6c5-PhotoWord_003.JPG" alt="Avatar" />
                     </IonAvatar>
 
-                 
-                    <IonItem style={styles.inputItem}>
-                        <IonInput label="Email" type="email" placeholder="email@domain.com"></IonInput>
+                    <IonItem className="input-item">
+                        <IonInput label="Email" type="email" placeholder=""></IonInput>
                     </IonItem>
 
-                  
-                    <IonItem style={styles.inputItem}>
-                        <IonInput type="password" label="Password" placeholder="Enter your password">
+                    <IonItem className="input-item">
+                        <IonInput type="password" label="Password" placeholder="">
                             <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                         </IonInput>
                     </IonItem>
 
-                
-                    <IonButton style={styles.button} onClick={doLogin}>Login</IonButton>
+                    <IonButton className="login-button" onClick={doLogin}>Login</IonButton>
                 </div>
             </IonContent>
         </IonPage>
