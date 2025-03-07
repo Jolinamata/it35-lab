@@ -28,13 +28,7 @@ import {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          <style>
-                {
-                  
-                }
-          </style>
-
-          <div>
+           <div>
          
           <IonCard color="primary">
         <IonCardHeader>
@@ -96,6 +90,7 @@ import {
               justifyContent: 'center',
               height: '100%',
             }}
+            
           >
             
           </div>
