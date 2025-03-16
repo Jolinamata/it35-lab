@@ -16,7 +16,7 @@ import {
     IonToolbar, 
     useIonRouter
 } from '@ionic/react';
-import { lockClosed, eye } from 'ionicons/icons';
+
 
 const Login: React.FC = () => {
   const navigation = useIonRouter();
