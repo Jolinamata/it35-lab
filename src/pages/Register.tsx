@@ -6,43 +6,57 @@ import {
       IonContent,
       IonInput,
       IonItem,
-      IonList
+      IonList,
+      IonButton
      } from '@ionic/react';
 
 const Register: React.FC = () => {
+  const handleRegister = () => {
+    console.log('Register button clicked!');
+ 
+  };
   return (
     
     <IonPage>
+     
       <IonHeader>
+     <div> <IonContent>
+       <h2>Register Page</h2>
+     </IonContent></div>
+
       <IonList>
       <IonItem>
-        <IonInput label="Text input" placeholder="Enter text"></IonInput>
+        <IonInput label="First Name" labelPlacement="stacked" placeholder="Enter First Name"></IonInput>
       </IonItem>
 
       <IonItem>
-        <IonInput label="Number input" type="number" placeholder="000"></IonInput>
+        <IonInput label="Last Name" labelPlacement="stacked" placeholder="Enter Last Name"></IonInput>
       </IonItem>
 
       <IonItem>
-        <IonInput label="Password input" type="password" value="password"></IonInput>
+        <IonInput label="Address" labelPlacement="stacked" placeholder="Enter address"></IonInput>
       </IonItem>
 
       <IonItem>
-        <IonInput label="Email input" type="email" placeholder="email@domain.com"></IonInput>
+        <IonInput label="Email" labelPlacement="stacked" placeholder="Enter email@domain.com"></IonInput>
       </IonItem>
 
       <IonItem>
-        <IonInput label="Telephone input" type="tel" placeholder="888-888-8888"></IonInput>
+        <IonInput label="Password" labelPlacement="stacked" placeholder="Enter password"></IonInput>
       </IonItem>
+
+      <IonItem>
+        <IonInput label="Confirm Password" labelPlacement="stacked" placeholder="Enter confirm password"></IonInput>
+      </IonItem>  
+     
     </IonList>
-        <IonToolbar>
-          <IonTitle>Register</IonTitle>
-        </IonToolbar>
+    <IonButton onClick={handleRegister} expand="full">
+  REGISTER
+</IonButton>
+    
+       
       </IonHeader>
-      <IonContent>
-        {/* Your registration form will go here */}
-        <h2>Register Page</h2>
-      </IonContent>
+    
     </IonPage>
   );
 };
