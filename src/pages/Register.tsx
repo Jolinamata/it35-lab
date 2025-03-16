@@ -20,11 +20,14 @@ const Register: React.FC = () => {
     <IonPage>
      
       <IonHeader>
-     <div> <IonContent>
-       <h2>Register Page</h2>
-     </IonContent></div>
+      
 
       <IonList>
+      <IonToolbar color="primary">
+  <IonTitle style={{ textAlign: 'center' }}>Register Page</IonTitle>
+</IonToolbar>
+
+
       <IonItem>
         <IonInput label="First Name" labelPlacement="stacked" placeholder="Enter First Name"></IonInput>
       </IonItem>
