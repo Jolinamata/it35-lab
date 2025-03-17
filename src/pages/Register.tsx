@@ -17,12 +17,12 @@ const Register: React.FC = () => {
   // ✅ Handle Register
   const handleRegister = () => {
     console.log('Register button clicked!');
-    router.push('/it35-lab/login', 'forward', 'replace');
+    router.push('/it35-lab', 'forward', 'replace');
   };
 
   // ✅ Handle Go to Login
   const doLogin = () => {
-    router.push('/it35-lab/login', 'forward', 'replace');
+    router.push('/it35-lab', 'forward', 'replace');
   };
 
   return (
