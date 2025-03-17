@@ -17,12 +17,12 @@ const Register: React.FC = () => {
   // ✅ Handle Register
   const handleRegister = () => {
     console.log('Register button clicked!');
-    router.push('/login', 'forward', 'replace');
+    router.push('/it35-lab/login', 'forward', 'replace');
   };
 
   // ✅ Handle Go to Login
-  const goToLogin = () => {
-    router.push('/login', 'forward', 'replace');
+  const doLogin = () => {
+    router.push('/it35-lab/login', 'forward', 'replace');
   };
 
   return (
@@ -66,7 +66,7 @@ const Register: React.FC = () => {
         </IonButton>
 
         {/* ✅ Go to Login Button */}
-        <IonButton onClick={goToLogin} expand="full" color="secondary" style={{ marginTop: '10px' }}>
+        <IonButton onClick={doLogin} expand="full" color="secondary" style={{ marginTop: '10px' }}>
           GO TO LOGIN
         </IonButton>
 

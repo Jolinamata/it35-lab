@@ -24,6 +24,9 @@ const Login: React.FC = () => {
   const doLogin = () => {
       navigation.push('/it35-lab/app','forward','replace');
   }
+  const doRegister = () => {
+    navigation.push('/it35-lab/register', 'forward', 'replace');
+  }
   return (
     <IonPage>
       <IonHeader>
@@ -53,7 +56,7 @@ const Login: React.FC = () => {
       <IonButton onClick={() => doLogin()} expand="full">
               Login
           </IonButton>  
-          <IonButton onClick={() => doLogin()} expand="full">
+          <IonButton onClick={() => doRegister()} expand="full">
               CREATE ACCOUNT
           </IonButton>  
       </IonContent>
