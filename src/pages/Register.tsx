@@ -14,13 +14,13 @@ import {
 const Register: React.FC = () => {
   const router = useIonRouter(); 
 
-  // ✅ Handle Register
+ 
   const handleRegister = () => {
     console.log('Register button clicked!');
     router.push('/it35-lab', 'forward', 'replace');
   };
 
-  // ✅ Handle Go to Login
+  
   const doLogin = () => {
     router.push('/it35-lab', 'forward', 'replace');
   };
@@ -60,12 +60,12 @@ const Register: React.FC = () => {
           </IonItem>
         </IonList>
 
-        {/* ✅ Register Button */}
+      
         <IonButton onClick={handleRegister} expand="full" color="primary" style={{ marginTop: '20px' }}>
           REGISTER
         </IonButton>
 
-        {/* ✅ Go to Login Button */}
+       
         <IonButton onClick={doLogin} expand="full" color="secondary" style={{ marginTop: '10px' }}>
           GO TO LOGIN
         </IonButton>
