@@ -50,7 +50,7 @@ const Register: React.FC = () => {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        {/* Centered Card Container */}
+    
         <div style={{ 
           display: 'flex', 
           justifyContent: 'center', 
@@ -61,7 +61,7 @@ const Register: React.FC = () => {
             width: '100%', 
             maxWidth: '500px',
             borderRadius: '15px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
+            boxShadow: '0 4px 16px rgba(28, 205, 236, 0.1)'
           }}>
             <IonCardContent>
               <h2 style={{ 
