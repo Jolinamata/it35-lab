@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import {
+  IonAlert,
   IonAvatar,
   IonButton,
   IonCard,
@@ -7,48 +7,46 @@ import {
   IonContent,
   IonInput,
   IonInputPasswordToggle,
-  IonItem,
   IonList,
+  IonItem,
   IonPage,
   IonText,
-  IonToolbar,
-  IonHeader,
-  IonTitle,
-  IonAlert,
-  IonModal,
   IonToast,
-  useIonRouter,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  useIonRouter
 } from '@ionic/react';
+import { useState } from 'react';
+import { supabase } from '../utils/supabaseClients';
 
 const Login: React.FC = () => {
   const navigation = useIonRouter();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const validUsername = 'user123';
-  const validPassword = 'password123';
-
-  const doLogin = () => {
+  const doLogin = async () => {
     if (!email || !password) {
+      setAlertMessage('All fields are required.');
       setShowAlert(true);
-    } else {
-      if (email === validUsername && password === validPassword) {
-        setShowSuccessModal(true);
-        setShowToast(true);
-      } else {
-        setLoginError(true);
-      }
+      return;
     }
-  };
 
-  const handleSuccessModalClose = () => {
-    setShowSuccessModal(false);
-    navigation.push('/it35-lab/app', 'forward', 'replace');
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      setAlertMessage(error.message);
+      setShowAlert(true);
+      return;
+    }
+
+    setShowToast(true);
+    setTimeout(() => {
+      navigation.push('/it35-lab/app', 'forward', 'replace');
+    }, 1000);
   };
 
   return (
@@ -86,8 +84,8 @@ const Login: React.FC = () => {
               </IonItem>
               <IonItem>
                 <IonInput
-                  label="Password"
                   type="password"
+                  label="Password"
                   placeholder="Enter your password"
                   value={password}
                   onIonChange={(e) => setPassword(e.detail.value!)}
@@ -96,14 +94,6 @@ const Login: React.FC = () => {
                 </IonInput>
               </IonItem>
             </IonList>
-
-            {loginError && (
-              <IonText color="danger">
-                <p style={{ color: '#e74c3c', marginTop: '10px' }}>
-                  Incorrect email or password. Please try again.
-                </p>
-              </IonText>
-            )}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
               <IonButton onClick={doLogin} expand="block">
@@ -123,27 +113,18 @@ const Login: React.FC = () => {
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
-          header="Please Fill in All Fields"
-          message="All fields are required. Please fill in all fields."
+          header="Login Error"
+          message={alertMessage}
           buttons={['OK']}
         />
-
-        <IonModal isOpen={showSuccessModal} onDidDismiss={handleSuccessModalClose}>
-          <IonContent className="ion-padding">
-            <h2>Login Successful!</h2>
-            <IonButton expand="full" onClick={handleSuccessModalClose}>
-              Go to Dashboard
-            </IonButton>
-          </IonContent>
-        </IonModal>
 
         <IonToast
           isOpen={showToast}
           message="Login successful! Redirecting to the dashboard..."
-          onDidDismiss={() => setShowToast(false)}
           duration={2000}
           position="top"
           color="success"
+          onDidDismiss={() => setShowToast(false)}
         />
       </IonContent>
     </IonPage>
