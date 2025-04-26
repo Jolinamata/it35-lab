@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { IonApp, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonInput, IonLabel, IonModal, IonFooter, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonAlert, IonText, IonAvatar, IonCol, IonGrid, IonRow, IonIcon, IonPopover } from '@ionic/react';
+import { 
+  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonInput, 
+  IonLabel, IonModal, IonFooter, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, 
+  IonCardTitle, IonAlert, IonText, IonAvatar, IonCol, IonGrid, IonRow, IonIcon, IonPopover 
+} from '@ionic/react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '../utils/supabaseClients';
-import { colorFill, pencil, trash } from 'ionicons/icons';
+import { pencil } from 'ionicons/icons';
 
 interface Post {
   post_id: string;
@@ -17,11 +21,11 @@ interface Post {
 const FeedContainer = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [postContent, setPostContent] = useState('');
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null); // Supabase auth user
+  const [dbUser, setDbUser] = useState<{ user_id: number, username: string, user_avatar_url: string } | null>(null); // Your users table info
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [popoverState, setPopoverState] = useState<{ open: boolean; event: Event | null; postId: string | null }>({ open: false, event: null, postId: null });
 
   useEffect(() => {
@@ -29,55 +33,51 @@ const FeedContainer = () => {
       const { data: authData } = await supabase.auth.getUser();
       if (authData?.user?.email?.endsWith('@nbsc.edu.ph')) {
         setUser(authData.user);
+
         const { data: userData, error } = await supabase
           .from('users')
           .select('user_id, username, user_avatar_url')
           .eq('user_email', authData.user.email)
           .single();
+          
         if (!error && userData) {
-          setUser({ ...authData.user, id: userData.user_id });
-          setUsername(userData.username);
+          setDbUser(userData);
         }
       }
     };
+
     const fetchPosts = async () => {
       const { data, error } = await supabase.from('posts').select('*').order('post_created_at', { ascending: false });
       if (!error) setPosts(data as Post[]);
     };
+
     fetchUser();
     fetchPosts();
   }, []);
 
   const createPost = async () => {
-    if (!postContent || !user || !username) return;
-  
-    // Fetch avatar URL
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('user_avatar_url')
-      .eq('user_id', user.id)
-      .single();
-  
-    if (userError) {
-      console.error('Error fetching user avatar:', userError);
-      return;
-    }
-  
-    const avatarUrl = userData?.user_avatar_url || 'https://ionicframework.com/docs/img/demos/avatar.svg';
-  
-    // Insert post with avatar URL
+    if (!postContent || !user || !dbUser) return;
+
+    const avatarUrl = dbUser.user_avatar_url || 'https://ionicframework.com/docs/img/demos/avatar.svg';
+
     const { data, error } = await supabase
       .from('posts')
       .insert([
-        { post_content: postContent, user_id: user.id, username, avatar_url: avatarUrl }
+        { 
+          post_content: postContent, 
+          user_id: dbUser.user_id, 
+          username: dbUser.username, 
+          avatar_url: avatarUrl 
+        }
       ])
       .select('*');
-  
+
     if (!error && data) {
       setPosts([data[0] as Post, ...posts]);
+      setPostContent('');
+    } else if (error) {
+      console.error('Post creation error:', error);
     }
-  
-    setPostContent('');
   };
 
   const deletePost = async (post_id: string) => {
@@ -98,6 +98,7 @@ const FeedContainer = () => {
       .update({ post_content: postContent })
       .match({ post_id: editingPost.post_id })
       .select('*');
+      
     if (!error && data) {
       const updatedPost = data[0] as Post;
       setPosts(posts.map(post => (post.post_id === updatedPost.post_id ? updatedPost : post)));
@@ -128,7 +129,7 @@ const FeedContainer = () => {
                 <IonButton onClick={createPost}>Post</IonButton>
               </div>
             </IonCard>
-  
+
             {posts.map(post => (
               <IonCard key={post.post_id} style={{ marginTop: '2rem' }}>
                 <IonCardHeader>
@@ -158,13 +159,13 @@ const FeedContainer = () => {
                     </IonCol>
                   </IonRow>
                 </IonCardHeader>
-  
+
                 <IonCardContent>
                   <IonText style={{ color: 'black' }}>
                     <h1>{post.post_content}</h1>
                   </IonText>
                 </IonCardContent>
-  
+
                 <IonPopover
                   isOpen={popoverState.open && popoverState.postId === post.post_id}
                   event={popoverState.event}
@@ -199,7 +200,7 @@ const FeedContainer = () => {
           <IonLabel>Loading...</IonLabel>
         )}
       </IonContent>
-  
+
       <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)}>
         <IonHeader>
           <IonToolbar>
@@ -218,7 +219,7 @@ const FeedContainer = () => {
           <IonButton onClick={() => setIsModalOpen(false)}>Cancel</IonButton>
         </IonFooter>
       </IonModal>
-  
+
       <IonAlert
         isOpen={isAlertOpen}
         onDidDismiss={() => setIsAlertOpen(false)}
@@ -228,8 +229,6 @@ const FeedContainer = () => {
       />
     </>
   );
-  
-
 };
 
 export default FeedContainer;
