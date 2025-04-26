@@ -29,38 +29,46 @@ const FeedContainer = () => {
   const [popoverState, setPopoverState] = useState<{ open: boolean; event: Event | null; postId: string | null }>({ open: false, event: null, postId: null });
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data: authData } = await supabase.auth.getUser();
-      if (authData?.user?.email?.endsWith('@nbsc.edu.ph')) {
-        setUser(authData.user);
-
-        const { data: userData, error } = await supabase
-          .from('users')
-          .select('user_id, username, user_avatar_url')
-          .eq('user_email', authData.user.email)
-          .single();
-          
-        if (!error && userData) {
-          setDbUser(userData);
-        }
-      }
-    };
-
-    const fetchPosts = async () => {
-      const { data, error } = await supabase.from('posts').select('*').order('post_created_at', { ascending: false });
-      if (!error) setPosts(data as Post[]);
-    };
-
     fetchUser();
     fetchPosts();
   }, []);
+
+  const fetchUser = async () => {
+    const { data: authData } = await supabase.auth.getUser();
+    if (authData?.user?.email?.endsWith('@nbsc.edu.ph')) {
+      setUser(authData.user);
+
+      const { data: userData, error } = await supabase
+        .from('users')
+        .select('user_id, username, user_avatar_url')
+        .eq('user_email', authData.user.email)
+        .single();
+        
+      if (!error && userData) {
+        setDbUser(userData);
+      }
+    }
+  };
+
+  const fetchPosts = async () => {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('post_created_at', { ascending: false });
+    
+    if (!error) {
+      setPosts(data as Post[]);
+    } else {
+      console.error('Fetch posts error:', error);
+    }
+  };
 
   const createPost = async () => {
     if (!postContent || !user || !dbUser) return;
 
     const avatarUrl = dbUser.user_avatar_url || 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('posts')
       .insert([
         { 
@@ -69,20 +77,19 @@ const FeedContainer = () => {
           username: dbUser.username, 
           avatar_url: avatarUrl 
         }
-      ])
-      .select('*');
+      ]);
 
-    if (!error && data) {
-      setPosts([data[0] as Post, ...posts]);
+    if (!error) {
       setPostContent('');
-    } else if (error) {
+      fetchPosts(); // Refresh posts after creating a new one
+    } else {
       console.error('Post creation error:', error);
     }
   };
 
   const deletePost = async (post_id: string) => {
     await supabase.from('posts').delete().match({ post_id });
-    setPosts(posts.filter(post => post.post_id !== post_id));
+    fetchPosts(); // Refresh posts after delete
   };
 
   const startEditingPost = (post: Post) => {
@@ -93,19 +100,19 @@ const FeedContainer = () => {
 
   const savePost = async () => {
     if (!postContent || !editingPost) return;
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('posts')
       .update({ post_content: postContent })
-      .match({ post_id: editingPost.post_id })
-      .select('*');
+      .match({ post_id: editingPost.post_id });
       
-    if (!error && data) {
-      const updatedPost = data[0] as Post;
-      setPosts(posts.map(post => (post.post_id === updatedPost.post_id ? updatedPost : post)));
+    if (!error) {
+      fetchPosts(); // Refresh posts after editing
       setPostContent('');
       setEditingPost(null);
       setIsModalOpen(false);
       setIsAlertOpen(true);
+    } else {
+      console.error('Update post error:', error);
     }
   };
 
@@ -140,8 +147,12 @@ const FeedContainer = () => {
                       </IonAvatar>
                     </IonCol>
                     <IonCol>
-                      <IonCardTitle style={{ marginTop: '10px' }}>{post.username}</IonCardTitle>
-                      <IonCardSubtitle>{new Date(post.post_created_at).toLocaleString()}</IonCardSubtitle>
+                      <IonCardTitle style={{ marginTop: '10px' }}>
+                        {post.username || 'Unknown User'}
+                      </IonCardTitle>
+                      <IonCardSubtitle>
+                        {new Date(post.post_created_at).toLocaleString()}
+                      </IonCardSubtitle>
                     </IonCol>
                     <IonCol size="auto">
                       <IonButton
@@ -201,6 +212,7 @@ const FeedContainer = () => {
         )}
       </IonContent>
 
+      {/* Modal for editing post */}
       <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)}>
         <IonHeader>
           <IonToolbar>
@@ -214,12 +226,13 @@ const FeedContainer = () => {
             placeholder="Edit your post..."
           />
         </IonContent>
-        <IonFooter>
+        <IonFooter style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem' }}>
           <IonButton onClick={savePost}>Save</IonButton>
-          <IonButton onClick={() => setIsModalOpen(false)}>Cancel</IonButton>
+          <IonButton color="medium" onClick={() => setIsModalOpen(false)}>Cancel</IonButton>
         </IonFooter>
       </IonModal>
 
+      {/* Alert after successful edit */}
       <IonAlert
         isOpen={isAlertOpen}
         onDidDismiss={() => setIsAlertOpen(false)}
