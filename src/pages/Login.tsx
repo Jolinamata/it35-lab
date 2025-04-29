@@ -73,7 +73,7 @@ const Login: React.FC = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            zIndex: 1,
+            
            
           }}
         ></div>
@@ -81,7 +81,7 @@ const Login: React.FC = () => {
         {/* Login Box with Animation */}
         <div
           style={{
-            zIndex: 2,
+            zIndex: 1,
             background: 'rgba(245, 122, 51, 0.15)',
             padding: '30px 20px',
             borderRadius: '20px',
@@ -94,7 +94,7 @@ const Login: React.FC = () => {
             border: '1px solid rgba(255, 255, 255, 0.18)',
             position: 'relative',
             animation: 'fadeInUp 1s ease forwards', // <--- added animation
-            margin:'200px Auto'
+            margin: '200px auto'
           }}
         >
           {/* JOLINGS LABEL */}
