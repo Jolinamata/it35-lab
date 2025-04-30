@@ -140,35 +140,91 @@ const FeedContainer = () => {
             {posts.map(post => (
               <IonCard key={post.post_id} style={{ marginTop: '2rem' }}>
                 <IonCardHeader>
-                  <IonRow>
-                    <IonCol size="1.85">
-                      <IonAvatar>
-                        <img alt={post.username} src={post.avatar_url} />
-                      </IonAvatar>
-                    </IonCol>
-                    <IonCol>
-                      <IonCardTitle style={{ marginTop: '10px' }}>
-                        {post.username || 'Unknown User'}
-                      </IonCardTitle>
-                      <IonCardSubtitle>
-                        {new Date(post.post_created_at).toLocaleString()}
-                      </IonCardSubtitle>
-                    </IonCol>
-                    <IonCol size="auto">
-                      <IonButton
-                        fill="clear"
-                        onClick={(e) =>
-                          setPopoverState({
-                            open: true,
-                            event: e.nativeEvent,
-                            postId: post.post_id,
-                          })
-                        }
-                      >
-                        <IonIcon color="secondary" icon={pencil} />
-                      </IonButton>
-                    </IonCol>
-                  </IonRow>
+                <IonRow style={{
+  backgroundColor: '#ffffff',
+  borderRadius: '12px',
+  padding: '8px',
+  margin: '4px 0',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+  borderLeft: '4px solid #4a6cf7'
+}}>
+  <IonCol size="1.85" style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '8px'
+  }}>
+    <IonAvatar style={{
+      width: '48px',
+      height: '48px',
+      border: '2px solid #4a6cf7',
+      boxShadow: '0 2px 4px rgba(74, 108, 247, 0.2)'
+    }}>
+      <img 
+        alt={post.username} 
+        src={post.avatar_url} 
+        style={{
+          objectFit: 'cover',
+          width: '100%',
+          height: '100%'
+        }}
+      />
+    </IonAvatar>
+  </IonCol>
+  
+  <IonCol style={{
+    padding: '8px 12px',
+    background: 'linear-gradient(to right, rgba(185, 231, 110, 0.05), transparent)',
+    borderRadius: '8px'
+  }}>
+    <IonCardTitle style={{ 
+      marginTop: '0',
+      color: '#2d3748',
+      fontSize: '1rem',
+      fontWeight: '600'
+    }}>
+      {post.username || 'Unknown User'}
+    </IonCardTitle>
+    <IonCardSubtitle style={{
+      color: '#718096',
+      fontSize: '0.8rem',
+      marginTop: '2px'
+    }}>
+      {new Date(post.post_created_at).toLocaleString()}
+    </IonCardSubtitle>
+  </IonCol>
+  
+  <IonCol size="auto" style={{
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 8px'
+  }}>
+    <IonButton
+      fill="clear"
+      onClick={(e) => setPopoverState({
+        open: true,
+        event: e.nativeEvent,
+        postId: post.post_id,
+      })}
+      style={{
+        '--background': 'rgba(74, 108, 247, 0.1)',
+        '--background-hover': 'rgba(74, 108, 247, 0.2)',
+        '--background-activated': 'rgba(74, 108, 247, 0.3)',
+        borderRadius: '50%',
+        width: '36px',
+        height: '36px'
+      }}
+    >
+      <IonIcon 
+        icon={pencil} 
+        style={{
+          color: '#4a6cf7',
+          fontSize: '1.1rem'
+        }} 
+      />
+    </IonButton>
+  </IonCol>
+</IonRow>
                 </IonCardHeader>
 
                 <IonCardContent>
