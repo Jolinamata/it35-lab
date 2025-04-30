@@ -167,141 +167,149 @@ const EditAccount: React.FC = () => {
           <h2>Edit Account</h2>
         </IonText>
 
-        <IonGrid className="ion-padding-top">
-          <IonRow className="ion-justify-content-center ion-align-items-center">
-            <IonCol size="12" className="ion-text-center">
-              {avatarPreview && (
-                <IonAvatar style={{ width: '120px', height: '120px', margin: '10px auto' }}>
-                  <IonImg src={avatarPreview} style={{ objectFit: 'cover' }} />
-                </IonAvatar>
-              )}
+        <div style={{ background: '#f3e5f5', padding: '20px', borderRadius: '15px', marginTop: '20px' }}>
+          <IonGrid className="ion-padding-top">
+            <IonRow className="ion-justify-content-center ion-align-items-center">
+              <IonCol size="12" className="ion-text-center">
+                {avatarPreview && (
+                  <IonAvatar style={{ width: '120px', height: '120px', margin: '10px auto' }}>
+                    <IonImg src={avatarPreview} style={{ objectFit: 'cover' }} />
+                  </IonAvatar>
+                )}
 
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                accept="image/*"
-                onChange={handleAvatarChange}
-              />
-              <IonButton expand="block" color="medium" onClick={() => fileInputRef.current?.click()}>
-                Upload Avatar
-              </IonButton>
-            </IonCol>
-          </IonRow>
-
-          <IonRow>
-            <IonCol size="12">
-            <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
-  <IonInput
-    label="Username :"
-    fill="outline"
-    placeholder="Enter username"
-    value={username}
-    onIonChange={(e) => setUsername(e.detail.value!)}
-    color="primary"
-    style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }} 
-  />
-</IonItem>
-
-            </IonCol>
-          </IonRow>
-
-          <IonRow>
-            <IonCol size="6">
-              <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
-                <IonInput
-                  label="First Name :"
-                  fill="outline"
-                  placeholder="Enter First Name"
-                  value={firstName}
-                  onIonChange={(e) => setFirstName(e.detail.value!)}
-                  color="primary"
-                  style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }} 
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  accept="image/*"
+                  onChange={handleAvatarChange}
                 />
-              </IonItem>
-            </IonCol>
-            <IonCol size="6">
-              <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
-                <IonInput
-                  label="Last Name :"
-                  fill="outline"
-                  placeholder="Enter Last Name"
-                  value={lastName}
-                  onIonChange={(e) => setLastName(e.detail.value!)}
-                  color="primary"
-                  style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }} 
-                />
-              </IonItem>
-            </IonCol>
-          </IonRow>
+                <IonButton expand="block" color="medium" onClick={() => fileInputRef.current?.click()}>
+                  Upload Avatar
+                </IonButton>
+              </IonCol>
+            </IonRow>
 
-          <IonRow>
-            <IonCol size="12">
-              <IonText color="medium"><h4>Change Password</h4></IonText>
-              <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
-                <IonInput
-                  label="New Password :"
-                  type="password"
-                  fill="outline"
-                  placeholder="Enter new password"
-                  value={password}
-                  onIonChange={(e) => setPassword(e.detail.value!)}
-                  color="primary"
-                  style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }} 
-                >
-                  <IonInputPasswordToggle slot="end" />
-                </IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
+            {/* Username */}
+            <IonRow>
+              <IonCol size="12">
+                <IonItem lines="inset" style={{  borderRadius: '8px' }}>
+                  <IonInput
+                    label="Username"
+                    fill="outline"
+                    placeholder="Enter username"
+                    value={username}
+                    onIonChange={(e) => setUsername(e.detail.value!)}
+                    color="primary"
+                    style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }}
+                  />
+                </IonItem>
+              </IonCol>
+            </IonRow>
 
-          <IonRow>
-            <IonCol size="12">
-              <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
-                <IonInput
-                  label="Confirm Password :"
-                  type="password"
-                  fill="outline"
-                  placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onIonChange={(e) => setConfirmPassword(e.detail.value!)}
-                  color="primary"
-                  style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }} 
-                >
-                  <IonInputPasswordToggle slot="end" />
-                </IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
+            {/* First and Last Name */}
+            <IonRow>
+              <IonCol size="6">
+                <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
+                  <IonInput
+                    label="First Name"
+                    fill="outline"
+                    placeholder="Enter First Name"
+                    value={firstName}
+                    onIonChange={(e) => setFirstName(e.detail.value!)}
+                    color="primary"
+                    style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }}
+                  />
+                </IonItem>
+              </IonCol>
+              <IonCol size="6">
+                <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
+                  <IonInput
+                    label="Last Name"
+                    fill="outline"
+                    placeholder="Enter Last Name"
+                    value={lastName}
+                    onIonChange={(e) => setLastName(e.detail.value!)}
+                    color="primary"
+                    style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }}
+                  />
+                </IonItem>
+              </IonCol>
+            </IonRow>
 
-          <IonRow>
-            <IonCol size="12">
-              <IonText color="medium"><h4>Confirm Changes</h4></IonText>
-              <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
-                <IonInput
-                  label="Current Password :"
-                  type="password"
-                  fill="outline"
-                  placeholder="Enter current password"
-                  value={currentPassword}
-                  onIonChange={(e) => setCurrentPassword(e.detail.value!)}
-                  color="primary"
-                  style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }} 
-                >
-                  <IonInputPasswordToggle slot="end" />
-                </IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
+            {/* Change Password */}
+            <IonRow>
+              <IonCol size="12">
+                <IonText color="medium"><h4>Change Password</h4></IonText>
+                <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
+                  <IonInput
+                    label="New Password"
+                    type="password"
+                    fill="outline"
+                    placeholder="Enter new password"
+                    value={password}
+                    onIonChange={(e) => setPassword(e.detail.value!)}
+                    color="primary"
+                    style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }}
+                  >
+                    <IonInputPasswordToggle slot="end" />
+                  </IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
 
-          <IonRow>
-            <IonCol size="12" className="ion-margin-top">
-              <IonButton expand="block" shape="round" color="primary" onClick={handleUpdate}>
-                Update Account
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+            {/* Confirm Password */}
+            <IonRow>
+              <IonCol size="12">
+                <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
+                  <IonInput
+                    label="Confirm Password"
+                    type="password"
+                    fill="outline"
+                    placeholder="Confirm new password"
+                    value={confirmPassword}
+                    onIonChange={(e) => setConfirmPassword(e.detail.value!)}
+                    color="primary"
+                    style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }}
+                  >
+                    <IonInputPasswordToggle slot="end" />
+                  </IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+
+            {/* Confirm Changes with Current Password */}
+            <IonRow>
+              <IonCol size="12">
+                <IonText color="medium"><h4>Confirm Changes</h4></IonText>
+                <IonItem lines="inset" style={{ background: '#f0f8ff', borderRadius: '8px' }}>
+                  <IonInput
+                    label="Current Password"
+                    type="password"
+                    fill="outline"
+                    placeholder="Enter current password"
+                    value={currentPassword}
+                    onIonChange={(e) => setCurrentPassword(e.detail.value!)}
+                    color="primary"
+                    style={{ backgroundColor: '#e0f7fa', borderColor: '#00bcd4' }}
+                  >
+                    <IonInputPasswordToggle slot="end" />
+                  </IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+
+            {/* Update Button */}
+            <IonRow>
+              <IonCol size="12" className="ion-margin-top">
+                <IonButton expand="block" shape="round" color="primary" onClick={handleUpdate}>
+                  Update Account
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </div>
+       
 
         <IonAlert
           isOpen={showAlert}
